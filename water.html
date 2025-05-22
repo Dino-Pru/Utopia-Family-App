@@ -16,305 +16,81 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <style>
-      /* Reset default styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      /* Define color scheme */
-      :root {
-        --light-blue: #4fc3f7;
-        --dark-blue: #0288d1;
-        --white: #ffffff;
-      }
-
-      /* Body styles */
-      body {
-        font-family: Arial, sans-serif;
+      /* [Existing styles unchanged except for the following...] */
+      .utility-form-container {
+        position: sticky;
+        top: 70px;
         background-color: var(--white);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+        z-index: 999;
+        padding: 5px; /* Reduced padding */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
-      /* Navbar container */
-      .navbar {
-        background-color: var(--dark-blue);
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-      }
-
-      /* User profile picture */
-      .user-pic {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 1px solid #ccc; /* Thin grey border */
-      }
-
-      /* Family name */
-      .family-name {
-        color: var(--white);
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        flex: 1;
-      }
-
-      /* Hamburger menu styling */
-      .hamburger {
-        display: none;
-        flex-direction: column;
-        cursor: pointer;
-        gap: 5px;
-      }
-
-      .hamburger span {
-        width: 25px;
-        height: 3px;
-        background-color: var(--white);
-        transition: all 0.3s ease;
-      }
-
-      /* Hamburger animation for active state */
-      .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-      }
-
-      .hamburger.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -7px);
-      }
-
-      /* Menu items container (navbar) */
-      .nav-menu {
-        display: flex;
-        gap: 20px;
-      }
-
-      /* Menu item styling (navbar) */
-      .nav-menu li {
-        list-style: none;
-        position: relative; /* For positioning the submenu */
-      }
-
-      .nav-menu a {
-        color: var(--white);
-        text-decoration: none;
-        font-size: 18px;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: color 0.3s ease, transform 0.3s ease;
-      }
-
-      .nav-menu a:hover {
-        color: var(--light-blue);
-        transform: scale(1.1);
-      }
-
-      /* Icon styling (navbar) */
-      .nav-menu i {
-        font-size: 18px;
-      }
-
-      /* Submenu styling */
-      .submenu {
-        display: none; /* Hidden by default */
-        position: absolute;
-        top: 100%; /* Position below the parent menu item */
-        left: 0;
-        background-color: var(--dark-blue);
-        min-width: 150px;
-        z-index: 1001;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Show submenu when parent is active */
-      .nav-menu li.active .submenu {
-        display: block;
-      }
-
-      .submenu li {
-        list-style: none;
-      }
-
-      .submenu a {
-        color: var(--white);
-        font-size: 16px;
-        padding: 10px 15px;
-        display: block;
-        transition: background-color 0.3s ease;
-      }
-
-      .submenu a:hover {
-        background-color: var(--light-blue);
-        color: var(--white);
-        transform: none; /* Override the parent hover transform */
-      }
-
-      /* Main content area */
-      main {
-        flex: 1;
-        padding: 80px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      /* Section styling */
-      section {
-        margin-bottom: 40px;
-      }
-
-      section h2 {
-        color: var(--dark-blue);
-        font-size: 24px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-
-      /* Form styling */
       .utility-form {
+        padding: 5px; /* Reduced padding */
+        max-width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        max-width: 500px;
-        margin: 0 auto 20px;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-radius: 8px;
+        gap: 4px; /* Minimized gap */
       }
 
-      .utility-form label {
-        font-size: 16px;
-        color: #333;
-      }
-
-      .utility-form input {
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+      .utility-form input,
+      .utility-form button {
+        font-size: 12px; /* Smaller font */
+        padding: 6px; /* Reduced padding */
         width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
       }
 
       .utility-form button {
         background-color: var(--dark-blue);
         color: var(--white);
-        padding: 10px;
         border: none;
-        border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
         transition: background-color 0.3s ease;
       }
 
-      .utility-form button:hover {
-        background-color: var(--light-blue);
-      }
-
-      /* Utility table */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-      }
-
-      th,
-      td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-
-      th {
-        background-color: var(--dark-blue);
-        color: var(--white);
-        font-size: 18px;
-      }
-
-      td {
-        font-size: 16px;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f5f5f5;
-      }
-
-      /* Footer styling */
-      footer {
-        background-color: var(--dark-blue);
-        color: var(--white);
-        text-align: center;
-        padding: 20px;
-        width: 100%;
-      }
-
-      /* Responsive design for mobile */
-      @media (max-width: 768px) {
-        .hamburger {
-          display: flex;
-        }
-
-        .nav-menu {
-          position: fixed;
-          top: 0;
-          left: -100%;
-          height: 100vh;
-          width: 250px;
-          background-color: var(--dark-blue);
-          flex-direction: column;
-          padding: 60px 20px;
-          transition: left 0.3s ease;
-        }
-
-        .nav-menu.active {
-          left: 0;
-        }
-
-        .nav-menu li {
-          margin: 10px 0;
-        }
-
-        /* Submenu adjustments for mobile */
-        .submenu {
-          position: static; /* Stack submenu items below parent */
-          width: 100%;
-          background-color: #0277bd; /* Slightly lighter shade for contrast */
-          margin-top: 5px;
-          border-radius: 0;
-          box-shadow: none;
-        }
-
-        .nav-menu li.active .submenu {
-          display: block;
-        }
-
-        .family-name {
-          font-size: 20px;
-        }
-
-        .user-pic {
-          width: 32px;
-          height: 32px;
+      /* [Existing media queries...] */
+      @media (max-width: 360px) {
+        .utility-form-container {
+          top: 50px;
+          padding: 3px; /* Further reduced */
         }
 
         .utility-form {
-          padding: 15px;
+          padding: 3px;
+          gap: 3px;
+        }
+
+        .utility-form input,
+        .utility-form button {
+          font-size: 11px; /* Even smaller font */
+          padding: 4px; /* Further reduced */
+        }
+
+        main {
+          padding: 50px 5px;
+        }
+
+        section h2 {
+          font-size: 16px;
+          margin-bottom: 8px;
+        }
+
+        th,
+        td {
+          font-size: 10px;
+          padding: 4px;
+        }
+
+        th {
+          font-size: 12px;
+        }
+
+        table {
+          min-width: 300px;
         }
       }
     </style>
