@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Family App PWA Test</title>
+    <title>Family App PWA</title>
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0288d1" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -42,7 +42,7 @@
       /* Navbar container */
       .navbar {
         background-color: var(--dark-blue);
-        padding: 10px 15px;
+        padding: 15px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -58,7 +58,7 @@
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
-        border: 1px solid #ccc;
+        border: 1px solid #ccc; /* Thin grey border */
       }
 
       /* Family name */
@@ -101,23 +101,22 @@
       /* Menu items container (navbar) */
       .nav-menu {
         display: flex;
-        gap: 15px;
+        gap: 20px;
       }
 
       /* Menu item styling (navbar) */
       .nav-menu li {
         list-style: none;
-        position: relative;
       }
 
       .nav-menu a {
         color: var(--white);
         text-decoration: none;
         font-size: 18px;
-        padding: 8px;
+        padding: 10px;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         transition: color 0.3s ease, transform 0.3s ease;
       }
 
@@ -131,85 +130,47 @@
         font-size: 18px;
       }
 
-      /* Submenu styling */
-      .submenu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: var(--dark-blue);
-        min-width: 150px;
-        z-index: 1001;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Show submenu when parent is active */
-      .nav-menu li.active .submenu {
-        display: block;
-      }
-
-      .submenu li {
-        list-style: none;
-      }
-
-      .submenu a {
-        color: var(--white);
-        font-size: 16px;
-        padding: 10px 15px;
-        display: block;
-        transition: background-color 0.3s ease;
-      }
-
-      .submenu a:hover {
-        background-color: var(--light-blue);
-        color: var(--white);
-        transform: none;
-      }
-
       /* Main content area */
       main {
         flex: 1;
-        padding: 70px 15px;
+        padding: 80px 20px;
         max-width: 1200px;
         margin: 0 auto;
       }
 
       /* Section styling */
       section {
-        margin-bottom: 30px;
+        margin-bottom: 40px;
       }
 
       section h2 {
         color: var(--dark-blue);
-        font-size: 22px;
-        margin-bottom: 15px;
+        font-size: 24px;
+        margin-bottom: 20px;
         text-align: center;
       }
 
       /* Events table */
-      .events-table {
-        overflow-x: auto;
-      }
-
       table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 10px;
-        min-width: 600px; /* Ensures table is scrollable on small screens */
       }
 
       th,
       td {
-        padding: 10px;
+        padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
-        font-size: 14px;
       }
 
       th {
         background-color: var(--dark-blue);
         color: var(--white);
+        font-size: 18px;
+      }
+
+      td {
         font-size: 16px;
       }
 
@@ -222,7 +183,7 @@
       .notifications-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
+        gap: 20px;
       }
 
       .reminder-card,
@@ -230,7 +191,7 @@
         background-color: var(--white);
         border: 2px solid;
         border-radius: 8px;
-        padding: 12px;
+        padding: 15px;
         text-align: center;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
@@ -263,9 +224,8 @@
 
       .reminder-card p,
       .notification-card p {
-        margin: 8px 0;
-        font-size: 14px;
-        line-height: 1.4;
+        margin: 10px 0;
+        font-size: 16px;
       }
 
       .reminder-card p strong,
@@ -278,7 +238,7 @@
         background-color: var(--dark-blue);
         color: var(--white);
         text-align: center;
-        padding: 15px;
+        padding: 20px;
         width: 100%;
       }
 
@@ -296,7 +256,7 @@
           width: 250px;
           background-color: var(--dark-blue);
           flex-direction: column;
-          padding: 60px 15px;
+          padding: 60px 20px;
           transition: left 0.3s ease;
         }
 
@@ -305,21 +265,7 @@
         }
 
         .nav-menu li {
-          margin: 8px 0;
-        }
-
-        /* Submenu adjustments for mobile */
-        .submenu {
-          position: static;
-          width: 100%;
-          background-color: #0277bd;
-          margin-top: 5px;
-          border-radius: 0;
-          box-shadow: none;
-        }
-
-        .nav-menu li.active .submenu {
-          display: block;
+          margin: 10px 0;
         }
 
         .family-name {
@@ -331,81 +277,9 @@
           height: 32px;
         }
 
-        main {
-          padding: 60px 10px;
-        }
-
-        section h2 {
-          font-size: 20px;
-        }
-
-        th,
-        td {
-          font-size: 12px;
-          padding: 8px;
-        }
-
-        th {
-          font-size: 14px;
-        }
-
         .reminders-container,
         .notifications-container {
           grid-template-columns: 1fr;
-          gap: 10px;
-        }
-
-        .reminder-card,
-        .notification-card {
-          padding: 10px;
-        }
-
-        .reminder-card p,
-        .notification-card p {
-          font-size: 13px;
-        }
-      }
-
-      /* Extra small screens (below 480px) */
-      @media (max-width: 480px) {
-        .family-name {
-          font-size: 18px;
-        }
-
-        .user-pic {
-          width: 28px;
-          height: 28px;
-        }
-
-        .nav-menu a {
-          font-size: 16px;
-        }
-
-        .submenu a {
-          font-size: 14px;
-        }
-
-        main {
-          padding: 55px 8px;
-        }
-
-        section h2 {
-          font-size: 18px;
-        }
-
-        th,
-        td {
-          font-size: 11px;
-          padding: 6px;
-        }
-
-        th {
-          font-size: 13px;
-        }
-
-        .reminder-card p,
-        .notification-card p {
-          font-size: 12px;
         }
       }
     </style>
@@ -413,7 +287,7 @@
   <body>
     <!-- Navbar -->
     <nav class="navbar">
-      <img src="image/user(1).png" alt="User Profile" class="user-pic" />
+      <img src="/images/user-pic.png" alt="User Profile" class="user-pic" onerror="this.src='https://via.placeholder.com/40'; this.onerror=null;" />
       <div class="family-name">Utopians</div>
       <div class="hamburger">
         <span></span>
@@ -422,18 +296,13 @@
       </div>
       <ul class="nav-menu">
         <li>
-          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="#"><i class="fas fa-home"></i> Home</a>
         </li>
         <li>
-          <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
+          <a href="#"><i class="fas fa-calendar-alt"></i> Events</a>
         </li>
-        <li class="menu-item-with-submenu">
-          <a href="#" class="submenu-toggle"><i class="fas fa-tools"></i> Utilities</a>
-          <ul class="submenu">
-            <li><a href="electricity.html">Electricity</a></li>
-            <li><a href="water.html">Water</a></li>
-            <li><a href="petrol.html">Petrol</a></li>
-          </ul>
+        <li>
+          <a href="#"><i class="fas fa-tools"></i> Utilities</a>
         </li>
         <li>
           <a href="#"><i class="fas fa-wrench"></i> Maintenance</a>
@@ -455,21 +324,80 @@
       <!-- Section 1: Events (Table) -->
       <section>
         <h2>Upcoming Events</h2>
-        <div class="events-table" id="events-table"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Venue</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Family Picnic</td>
+              <td>Central Park</td>
+              <td>May 15, 2025</td>
+              <td>12:00 PM</td>
+            </tr>
+            <tr>
+              <td>Movie Night</td>
+              <td>Home Theater</td>
+              <td>May 20, 2025</td>
+              <td>7:00 PM</td>
+            </tr>
+            <tr>
+              <td>Birthday Party</td>
+              <td>Community Center</td>
+              <td>May 25, 2025</td>
+              <td>3:00 PM</td>
+            </tr>
+            <tr>
+              <td>Game Night</td>
+              <td>Living Room</td>
+              <td>May 30, 2025</td>
+              <td>6:00 PM</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <!-- Section 2: Reminders (Cards) -->
       <section>
         <h2>Reminders</h2>
-        <div class="reminders-container" id="reminders-container">
-          <!-- Dynamic Utility Reminders will be appended here -->
+        <div class="reminders-container">
+          <div class="reminder-card red">
+            <p><strong>Reminder:</strong> Pay Utility Bill</p>
+            <p><strong>Due Date:</strong> May 12, 2025</p>
+          </div>
+          <div class="reminder-card green">
+            <p><strong>Reminder:</strong> Schedule Maintenance</p>
+            <p><strong>Due Date:</strong> May 18, 2025</p>
+          </div>
+          <div class="reminder-card blue">
+            <p><strong>Reminder:</strong> Plan Weekly Budget</p>
+            <p><strong>Due Date:</strong> May 20, 2025</p>
+          </div>
         </div>
       </section>
 
       <!-- Section 3: Notifications (Cards) -->
       <section>
         <h2>Notifications</h2>
-        <div class="notifications-container" id="notifications-container"></div>
+        <div class="notifications-container">
+          <div class="notification-card purple">
+            <p><strong>Notification:</strong> New Event Added: Family Picnic</p>
+            <p><strong>Timestamp:</strong> May 10, 2025 10:00 AM</p>
+          </div>
+          <div class="notification-card orange">
+            <p><strong>Notification:</strong> Budget Updated</p>
+            <p><strong>Timestamp:</strong> May 10, 2025 2:00 PM</p>
+          </div>
+          <div class="notification-card teal">
+            <p><strong>Notification:</strong> Maintenance Scheduled</p>
+            <p><strong>Timestamp:</strong> May 11, 2025 9:00 AM</p>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -494,185 +422,6 @@
           navMenu.classList.remove("active");
         });
       });
-
-      // JavaScript for submenu toggle
-      const submenuToggles = document.querySelectorAll(".submenu-toggle");
-      submenuToggles.forEach((toggle) => {
-        toggle.addEventListener("click", (e) => {
-          e.preventDefault();
-          const parentLi = toggle.parentElement;
-          const isActive = parentLi.classList.contains("active");
-
-          document.querySelectorAll(".nav-menu li").forEach((li) => {
-            li.classList.remove("active");
-          });
-
-          if (!isActive) {
-            parentLi.classList.add("active");
-          }
-        });
-      });
-
-      document.querySelectorAll(".submenu a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.querySelectorAll(".nav-menu li").forEach((li) => {
-            li.classList.remove("active");
-          });
-          hamburger.classList.remove("active");
-          navMenu.classList.remove("active");
-        });
-      });
-
-      // Function to format time from 24-hour to 12-hour
-      function formatTimeTo12Hour(timeStr) {
-        const [hours, minutes] = timeStr.split(":").map(Number);
-        const period = hours >= 12 ? "PM" : "AM";
-        const adjustedHours = hours % 12 || 12;
-        return `${adjustedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
-      }
-
-      // Function to display events in a table
-      function displayEvents() {
-        console.log("Displaying events...");
-        const events = JSON.parse(localStorage.getItem("events")) || [];
-        console.log("Events to display:", events);
-
-        const eventsTable = document.getElementById("events-table");
-        let tableHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Venue</th>
-                <th>Date</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-
-        if (events.length === 0) {
-          tableHTML += `<tr><td colspan="4">No events added yet.</td></tr>`;
-        } else {
-          events.forEach((event, index) => {
-            const dateObj = new Date(event.date);
-            const formattedDate = dateObj.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric"
-            });
-
-            const formattedTime = formatTimeTo12Hour(event.time);
-
-            tableHTML += `
-              <tr>
-                <td>${event.name}</td>
-                <td>${event.venue}</td>
-                <td>${formattedDate}</td>
-                <td>${formattedTime}</td>
-              </tr>
-            `;
-          });
-        }
-
-        tableHTML += `
-            </tbody>
-          </table>
-        `;
-        eventsTable.innerHTML = tableHTML;
-        console.log("Table updated");
-      }
-
-      // Function to display notifications for upcoming events
-      function displayNotifications() {
-        console.log("Displaying notifications...");
-        const events = JSON.parse(localStorage.getItem("events")) || [];
-        console.log("Events for notifications:", events);
-
-        const notificationsContainer = document.getElementById("notifications-container");
-        let notificationsHTML = "";
-
-        if (events.length === 0) {
-          notificationsHTML = `<p>No upcoming events to notify.</p>`;
-        } else {
-          const colors = ["purple", "orange", "teal"];
-          events.forEach((event, index) => {
-            const dateObj = new Date(event.date);
-            const formattedDate = dateObj.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric"
-            });
-
-            const formattedTime = formatTimeTo12Hour(event.time);
-
-            const colorClass = colors[index % colors.length];
-
-            notificationsHTML += `
-              <div class="notification-card ${colorClass}">
-                <p><strong>Upcoming Event:</strong> ${event.name}</p>
-                <p><strong>Date:</strong> ${formattedDate} at ${formattedTime}</p>
-              </div>
-            `;
-          });
-        }
-
-        notificationsContainer.innerHTML = notificationsHTML;
-        console.log("Notifications updated");
-      }
-
-      // Function to display utility reminders
-      function displayUtilityReminders() {
-        console.log("Displaying utility reminders...");
-        const utilities = [
-          { key: "electricityData", type: "Electricity", unit: "kWh" },
-          { key: "waterData", type: "Water", unit: "Liters" },
-          { key: "petrolData", type: "Petrol", unit: "Liters" }
-        ];
-
-        const remindersContainer = document.getElementById("reminders-container");
-        const colors = ["red", "green", "blue"];
-        let colorIndex = 0;
-        let hasData = false;
-
-        utilities.forEach((utility, index) => {
-          const data = JSON.parse(localStorage.getItem(utility.key)) || [];
-          if (data.length > 0) {
-            hasData = true;
-            data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            const latest = data[0];
-
-            const dateObj = new Date(latest.date);
-            const formattedDate = dateObj.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric"
-            });
-
-            const colorClass = colors[colorIndex % colors.length];
-            colorIndex++;
-
-            const reminderHTML = `
-              <div class="reminder-card ${colorClass}">
-                <p><strong>Utility Update:</strong> ${utility.type} Usage</p>
-                <p><strong>Usage:</strong> ${latest.usage} ${utility.unit}, <strong>Cost:</strong> ${latest.cost.toFixed(2)}, <strong>Date:</strong> ${formattedDate}</p>
-              </div>
-            `;
-            remindersContainer.insertAdjacentHTML("beforeend", reminderHTML);
-          }
-        });
-
-        if (!hasData) {
-          remindersContainer.innerHTML = `<p>No utility updates to display.</p>`;
-        }
-
-        console.log("Utility reminders updated");
-      }
-
-      // Initial display of events, notifications, and utility reminders
-      displayEvents();
-      displayNotifications();
-      displayUtilityReminders();
 
       // Register service worker
       if ("serviceWorker" in navigator) {
