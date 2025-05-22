@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family App PWA - Events</title>
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0288d1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      /* Reset default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Define color scheme */
+      :root {
+        --light-blue: #4fc3f7;
+        --dark-blue: #0288d1;
+        --white: #ffffff;
+      }
+
+      /* Body styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--white);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Navbar container */
+      .navbar {
+        background-color: var(--dark-blue);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      /* User profile picture */
+      .user-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #ccc; /* Thin grey border */
+      }
+
+      /* Family name */
+      .family-name {
+        color: var(--white);
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+      }
+
+      /* Hamburger menu styling */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+      }
+
+      .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: var(--white);
+        transition: all 0.3s ease;
+      }
+
+      /* Hamburger animation for active state */
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+
+      /* Menu items container (navbar) */
+      .nav-menu {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* Menu item styling (navbar) */
+      .nav-menu li {
+        list-style: none;
+        position: relative; /* For positioning the submenu */
+      }
+
+      .nav-menu a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        color: var(--light-blue);
+        transform: scale(1.1);
+      }
+
+      /* Icon styling (navbar) */
+      .nav-menu i {
+        font-size: 18px;
+      }
+
+      /* Submenu styling */
+      .submenu {
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 100%; /* Position below the parent menu item */
+        left: 0;
+        background-color: var(--dark-blue);
+        min-width: 150px;
+        z-index: 1001;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Show submenu when parent is active */
+      .nav-menu li.active .submenu {
+        display: block;
+      }
+
+      .submenu li {
+        list-style: none;
+      }
+
+      .submenu a {
+        color: var(--white);
+        font-size: 16px;
+        padding: 10px 15px;
+        display: block;
+        transition: background-color 0.3s ease;
+      }
+
+      .submenu a:hover {
+        background-color: var(--light-blue);
+        color: var(--white);
+        transform: none; /* Override the parent hover transform */
+      }
+
+      /* Main content area */
+      main {
+        flex: 1;
+        padding: 80px 20px 20px; /* Added padding-top to avoid overlap with fixed navbar */
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Section styling */
+      section {
+        margin-bottom: 40px;
+      }
+
+      section h2 {
+        color: var(--dark-blue);
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      /* Form styling */
+      .event-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto 20px;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+      }
+
+      .event-form label {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .event-form input,
+      .event-form select {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+      }
+
+      .event-form button {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .event-form button:hover {
+        background-color: var(--light-blue);
+      }
+
+      /* Events table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        font-size: 18px;
+      }
+
+      td {
+        font-size: 16px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f5f5f5;
+      }
+
+      /* Delete button styling */
+      .delete-btn {
+        background-color: #ef5350;
+        color: var(--white);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+
+      .delete-btn:hover {
+        background-color: #d32f2f;
+      }
+
+      /* Footer styling */
+      footer {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+      }
+
+      /* Responsive design for mobile */
+      @media (max-width: 768px) {
+        .hamburger {
+          display: flex;
+        }
+
+        .nav-menu {
+          position: fixed;
+          top: 0;
+          left: -100%;
+          height: 100vh;
+          width: 250px;
+          background-color: var(--dark-blue);
+          flex-direction: column;
+          padding: 60px 20px;
+          transition: left 0.3s ease;
+        }
+
+        .nav-menu.active {
+          left: 0;
+        }
+
+        .nav-menu li {
+          margin: 10px 0;
+        }
+
+        /* Submenu adjustments for mobile */
+        .submenu {
+          position: static; /* Stack submenu items below parent */
+          width: 100%;
+          background-color: #0277bd; /* Slightly lighter shade for contrast */
+          margin-top: 5px;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        .nav-menu li.active .submenu {
+          display: block;
+        }
+
+        .family-name {
+          font-size: 20px;
+        }
+
+        .user-pic {
+          width: 32px;
+          height: 32px;
+        }
+
+        .event-form {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <img src="image/user(1).png" alt="User Profile" class="user-pic" />
+      <div class="family-name">Utopians</div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
+        </li>
+        <li class="menu-item-with-submenu">
+          <a href="#" class="submenu-toggle"><i class="fas fa-tools"></i> Utilities</a>
+          <ul class="submenu">
+            <li><a href="electricity.html">Electricity</a></li>
+            <li><a href="water.html">Water</a></li>
+            <li><a href="petrol.html">Petrol</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-wrench"></i> Maintenance</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-dollar-sign"></i> Budgets</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-comment"></i> Chat</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main>
+      <section>
+        <h2>Add New Event</h2>
+        <!-- Form to add new events -->
+        <div class="event-form">
+          <label for="event-name">Event Name:</label>
+          <input type="text" id="event-name" placeholder="Enter event name" required />
+          <label for="event-venue">Venue:</label>
+          <input type="text" id="event-venue" placeholder="Enter venue" required />
+          <label for="event-date">Date:</label>
+          <input type="date" id="event-date" required />
+          <label for="event-time">Time:</label>
+          <input type="time" id="event-time" required />
+          <button onclick="addEvent()">Add Event</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Events List</h2>
+        <!-- Table to display events -->
+        <div class="events-table" id="events-table"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Utopians Family App</p>
+    </footer>
+
+    <script>
+      // JavaScript for hamburger menu toggle
+      const hamburger = document.querySelector(".hamburger");
+      const navMenu = document.querySelector(".nav-menu");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+
+      // JavaScript for submenu toggle
+      const submenuToggles = document.querySelectorAll(".submenu-toggle");
+      submenuToggles.forEach((toggle) => {
+        toggle.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default anchor behavior for toggle only
+          const parentLi = toggle.parentElement;
+          const isActive = parentLi.classList.contains("active");
+
+          // Close all other submenus
+          document.querySelectorAll(".nav-menu li").forEach((li) => {
+            li.classList.remove("active");
+          });
+
+          // Toggle the current submenu
+          if (!isActive) {
+            parentLi.classList.add("active");
+          }
+        });
+      });
+
+      // Allow submenu links to navigate and close the menu
+      document.querySelectorAll(".submenu a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          // Close the submenu and hamburger menu
+          document.querySelectorAll(".nav-menu li").forEach((li) => {
+            li.classList.remove("active");
+          });
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+
+          // Allow navigation to the href (no e.preventDefault here)
+          const href = link.getAttribute("href");
+          if (href && href !== "#") {
+            window.location.href = href; // Ensure navigation occurs
+          }
+        });
+      });
+
+      // Close hamburger menu when clicking main menu items (non-submenu)
+      document.querySelectorAll(".nav-menu > li > a:not(.submenu-toggle)").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+
+      // Function to add a new event
+      function addEvent() {
+        const name = document.getElementById("event-name").value;
+        const venue = document.getElementById("event-venue").value;
+        const date = document.getElementById("event-date").value;
+        const time = document.getElementById("event-time").value;
+
+        if (!name || !venue || !date || !time) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        const eventData = { name, venue, date, time };
+
+        // Retrieve existing events from localStorage
+        let events = JSON.parse(localStorage.getItem("events")) || [];
+        events.push(eventData);
+        localStorage.setItem("events", JSON.stringify(events));
+
+        // Clear form inputs
+        document.getElementById("event-name").value = "";
+        document.getElementById("event-venue").value = "";
+        document.getElementById("event-date").value = "";
+        document.getElementById("event-time").value = "";
+
+        // Update the table
+        displayEvents();
+      }
+
+      // Function to format time from 24-hour (e.g., "14:30") to 12-hour (e.g., "2:30 PM")
+      function formatTimeTo12Hour(timeStr) {
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        const period = hours >= 12 ? "PM" : "AM";
+        const adjustedHours = hours % 12 || 12; // Convert 0 or 12 to 12 for 12 AM/PM
+        return `${adjustedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+      }
+
+      // Function to display events in a table
+      function displayEvents() {
+        console.log("Displaying events...");
+        const events = JSON.parse(localStorage.getItem("events")) || [];
+        console.log("Events to display:", events);
+
+        const eventsTable = document.getElementById("events-table");
+        let tableHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        if (events.length === 0) {
+          tableHTML += `<tr><td colspan="5">No events added yet.</td></tr>`;
+        } else {
+          events.forEach((event, index) => {
+            // Format date to "May 22, 2022"
+            const dateObj = new Date(event.date);
+            const formattedDate = dateObj.toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            });
+
+            // Format time to "10:50 AM"
+            const formattedTime = formatTimeTo12Hour(event.time);
+
+            tableHTML += `
+              <tr>
+                <td>${event.name}</td>
+                <td>${event.venue}</td>
+                <td>${formattedDate}</td>
+                <td>${formattedTime}</td>
+                <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+              </tr>
+            `;
+          });
+        }
+
+        tableHTML += `
+            </tbody>
+          </table>
+        `;
+        eventsTable.innerHTML = tableHTML;
+        console.log("Table updated");
+
+        // Add event listeners to delete buttons
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            const index = parseInt(button.getAttribute("data-index"));
+            console.log(`Delete button clicked for index: ${index}`);
+
+            // Remove event from array
+            let events = JSON.parse(localStorage.getItem("events")) || [];
+            events.splice(index, 1);
+            console.log("Events after deletion:", events);
+
+            // Save updated events to localStorage
+            localStorage.setItem("events", JSON.stringify(events));
+            console.log("Events saved to localStorage:", JSON.parse(localStorage.getItem("events")));
+
+            // Update the table
+            displayEvents();
+          });
+        });
+      }
+
+      // Initial display of events
+      displayEvents();
+
+      // Register service worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((reg) => console.log("Service Worker registered:", reg))
+            .catch((err) =>
+              console.log("Service Worker registration failed:", err)
+            );
+        });
+      }
+    </script>
+  </body>
+</html>

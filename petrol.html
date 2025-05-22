@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family App PWA - Petrol</title>
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0288d1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      /* Reset default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Define color scheme */
+      :root {
+        --light-blue: #4fc3f7;
+        --dark-blue: #0288d1;
+        --white: #ffffff;
+      }
+
+      /* Body styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--white);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Navbar container */
+      .navbar {
+        background-color: var(--dark-blue);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      /* User profile picture */
+      .user-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #ccc; /* Thin grey border */
+      }
+
+      /* Family name */
+      .family-name {
+        color: var(--white);
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+      }
+
+      /* Hamburger menu styling */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+      }
+
+      .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: var(--white);
+        transition: all 0.3s ease;
+      }
+
+      /* Hamburger animation for active state */
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+
+      /* Menu items container (navbar) */
+      .nav-menu {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* Menu item styling (navbar) */
+      .nav-menu li {
+        list-style: none;
+        position: relative; /* For positioning the submenu */
+      }
+
+      .nav-menu a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+        color: var(--light-blue);
+        transform: scale(1.1);
+      }
+
+      /* Icon styling (navbar) */
+      .nav-menu i {
+        font-size: 18px;
+      }
+
+      /* Submenu styling */
+      .submenu {
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 100%; /* Position below the parent menu item */
+        left: 0;
+        background-color: var(--dark-blue);
+        min-width: 150px;
+        z-index: 1001;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Show submenu when parent is active */
+      .nav-menu li.active .submenu {
+        display: block;
+      }
+
+      .submenu li {
+        list-style: none;
+      }
+
+      .submenu a {
+        color: var(--white);
+        font-size: 16px;
+        padding: 10px 15px;
+        display: block;
+        transition: background-color 0.3s ease;
+      }
+
+      .submenu a:hover {
+        background-color: var(--light-blue);
+        color: var(--white);
+        transform: none; /* Override the parent hover transform */
+      }
+
+      /* Main content area */
+      main {
+        flex: 1;
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Section styling */
+      section {
+        margin-bottom: 40px;
+      }
+
+      section h2 {
+        color: var(--dark-blue);
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      /* Form styling */
+      .utility-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto 20px;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+      }
+
+      .utility-form label {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .utility-form input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+      }
+
+      .utility-form button {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .utility-form button:hover {
+        background-color: var(--light-blue);
+      }
+
+      /* Utility table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        font-size: 18px;
+      }
+
+      td {
+        font-size: 16px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f5f5f5;
+      }
+
+      /* Footer styling */
+      footer {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+      }
+
+      /* Responsive design for mobile */
+      @media (max-width: 768px) {
+        .hamburger {
+          display: flex;
+        }
+
+        .nav-menu {
+          position: fixed;
+          top: 0;
+          left: -100%;
+          height: 100vh;
+          width: 250px;
+          background-color: var(--dark-blue);
+          flex-direction: column;
+          padding: 60px 20px;
+          transition: left 0.3s ease;
+        }
+
+        .nav-menu.active {
+          left: 0;
+        }
+
+        .nav-menu li {
+          margin: 10px 0;
+        }
+
+        /* Submenu adjustments for mobile */
+        .submenu {
+          position: static; /* Stack submenu items below parent */
+          width: 100%;
+          background-color: #0277bd; /* Slightly lighter shade for contrast */
+          margin-top: 5px;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        .nav-menu li.active .submenu {
+          display: block;
+        }
+
+        .family-name {
+          font-size: 20px;
+        }
+
+        .user-pic {
+          width: 32px;
+          height: 32px;
+        }
+
+        .utility-form {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <img src="image/user(1).png" alt="User Profile" class="user-pic" />
+      <div class="family-name">Utopians</div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
+        </li>
+        <li class="menu-item-with-submenu">
+          <a href="#" class="submenu-toggle"><i class="fas fa-tools"></i> Utilities</a>
+          <ul class="submenu">
+            <li><a href="electricity.html">Electricity</a></li>
+            <li><a href="water.html">Water</a></li>
+            <li><a href="petrol.html">Petrol</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-wrench"></i> Maintenance</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-dollar-sign"></i> Budgets</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-comment"></i> Chat</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main>
+      <section>
+        <h2>Petrol Usage</h2>
+        <!-- Form to add petrol usage -->
+        <div class="utility-form">
+          <label for="usage">Usage (Liters):</label>
+          <input type="number" id="usage" placeholder="Enter usage in Liters" required />
+          <label for="date">Date:</label>
+          <input type="date" id="date" required />
+          <label for="cost">Cost (Currency):</label>
+          <input type="number" id="cost" placeholder="Enter cost" step="0.01" required />
+          <button onclick="addUtility()">Add Usage</button>
+        </div>
+        <!-- Table to display petrol usage -->
+        <div class="utility-table" id="utility-table"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Utopians Family App</p>
+    </footer>
+
+    <script>
+      // JavaScript for hamburger menu toggle
+      const hamburger = document.querySelector(".hamburger");
+      const navMenu = document.querySelector(".nav-menu");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+
+      document.querySelectorAll(".nav-menu a").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+
+      // JavaScript for submenu toggle
+      const submenuToggles = document.querySelectorAll(".submenu-toggle");
+      submenuToggles.forEach((toggle) => {
+        toggle.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default anchor behavior
+          const parentLi = toggle.parentElement;
+          const isActive = parentLi.classList.contains("active");
+
+          // Close all other submenus
+          document.querySelectorAll(".nav-menu li").forEach((li) => {
+            li.classList.remove("active");
+          });
+
+          // Toggle the current submenu
+          if (!isActive) {
+            parentLi.classList.add("active");
+          }
+        });
+      });
+
+      // Close submenu when clicking a submenu item
+      document.querySelectorAll(".submenu a").forEach((link) => {
+        link.addEventListener("click", () => {
+          document.querySelectorAll(".nav-menu li").forEach((li) => {
+            li.classList.remove("active");
+          });
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+
+      // Function to add utility data
+      function addUtility() {
+        const usage = document.getElementById("usage").value;
+        const date = document.getElementById("date").value;
+        const cost = document.getElementById("cost").value;
+
+        if (!usage || !date || !cost) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        const utilityData = {
+          usage: parseFloat(usage),
+          date,
+          cost: parseFloat(cost)
+        };
+
+        // Retrieve existing data from localStorage
+        let utilities = JSON.parse(localStorage.getItem("petrolData")) || [];
+        utilities.push(utilityData);
+        localStorage.setItem("petrolData", JSON.stringify(utilities));
+
+        // Clear form inputs
+        document.getElementById("usage").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("cost").value = "";
+
+        // Update the table
+        displayUtilities();
+      }
+
+      // Function to display utilities in a table, ordered by latest date
+      function displayUtilities() {
+        console.log("Displaying utilities...");
+        let utilities = JSON.parse(localStorage.getItem("petrolData")) || [];
+        console.log("Utilities to display:", utilities);
+
+        // Sort utilities by date (latest first)
+        utilities.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const utilityTable = document.getElementById("utility-table");
+        let tableHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Usage (Liters)</th>
+                <th>Date</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        if (utilities.length === 0) {
+          tableHTML += `<tr><td colspan="3">No petrol usage added yet.</td></tr>`;
+        } else {
+          utilities.forEach((utility) => {
+            // Format date to "May 22, 2022"
+            const dateObj = new Date(utility.date);
+            const formattedDate = dateObj.toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric"
+            });
+
+            tableHTML += `
+              <tr>
+                <td>${utility.usage}</td>
+                <td>${formattedDate}</td>
+                <td>${utility.cost.toFixed(2)}</td>
+              </tr>
+            `;
+          });
+        }
+
+        tableHTML += `
+            </tbody>
+          </table>
+        `;
+        utilityTable.innerHTML = tableHTML;
+        console.log("Table updated");
+      }
+
+      // Initial display of utilities
+      displayUtilities();
+
+      // Register service worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((reg) => console.log("Service Worker registered:", reg))
+            .catch((err) =>
+              console.log("Service Worker registration failed:", err)
+            );
+        });
+      }
+    </script>
+  </body>
+</html>
